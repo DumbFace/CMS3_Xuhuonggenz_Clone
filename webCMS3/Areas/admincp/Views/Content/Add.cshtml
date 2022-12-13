@@ -1,0 +1,206 @@
+﻿@using webCMS3.Models
+@model tblNews
+@{
+    ViewBag.Title = "Thêm mới bài viết";
+    tblUser tbl = MyAuthorize.GetLoggedUser(Context);
+    int intRole = 2;
+    if (tbl != null)
+    {
+        intRole = tbl.IdRole;
+    }
+}
+
+<link href="~/Content/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-tagsinput.min.css" rel="stylesheet" />
+
+<div class="x_panel">
+    <div class="x_title">
+        <h3>
+            @ViewBag.Title
+        </h3>
+    </div>
+    <div class="x_content">
+        <form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+            @Html.HiddenFor(model => model.Id)
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Chuyên mục <span class="text-red">*</span></label>
+                <div class="col-md-5 col-sm-6 col-xs-9 col-lg-4">
+                    @Html.DropDownList("IdZone", new SelectList(new myfunc().GetListZone(), "Id", "ZoneName"), new { @class = "form-control required" })
+                    @Html.ValidationMessageFor(model => model.IdZone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Tiêu đề <span class="text-red">*</span></label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control required", @placeholder = "Tiêu đề bài viết" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Tóm tắt <span class="text-red">*</span></label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @Html.TextAreaFor(model => model.Teaser, new { @class = "form-control required", @placeholder = "Tóm tắt nội dung" })
+                    @Html.ValidationMessageFor(model => model.Teaser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="item form-group">
+                <div class="col-md-2 col-sm-2">
+                    <div class="col-form-label label-align">Nội dung <span class="text-red">*</span></div>
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-4">
+                            <button class="btn btn-success " type="button" id="btnPostContent" onclick="showimg(1);">
+                                <i class="fa fa-image"></i>
+                                <span>Chèn Ảnh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @Html.Hidden("Body")
+                    <div class="document-editor__toolbar"></div>
+                    <div id="editor">
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Avatar <span class="text-red">*</span></label>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                    <button class="btn btn-success " type="button" id="btnPostContent" onclick="showimg(2);">
+                        <i class="fa fa-check-circle"></i>
+                        <span>Chọn hình</span>
+                    </button>
+                    <div>
+                        <span id="error-Avatar" class="text-danger"></span>
+                    </div>
+                    <div class="pl-0 col-sm-12">
+                        <div id="loadImgThumbnail" class="files">
+                        </div>
+                        @Html.Hidden("Avatar")
+                    </div>
+                </div>
+
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Bài viết tiêu điểm </label>
+                <div class="col-md-10 col-sm-10 col-xs-12 m-auto">
+                    @Html.CheckBoxFor(m => m.IsFeature, new { @class = "form-check-input" })
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Tag <span class="text-red">*</span></label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" name="MasterTag" id="MasterTag" class="form-control required" placeholder="Nhập duy nhất tag" />
+                    <span id="errMasterTag" class="text-danger">Vui lòng chọn master tag</span>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Thời gian xuất bản <span class="text-red">*</span></label>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <input type="text" name="PublishDate" id="PublishDate" class="form-control has-feedback-left" placeholder="" required="required" />
+                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Trạng thái  <span class="text-red">*</span></label>
+                <div class="col-md-4 col-sm-3 col-xs-12">
+                    <select id="cbStatus" class="form-control">
+                        <option value="0">Chờ duyệt</option>
+                        @if (intRole == 1)
+                        {
+                            <option value="1" selected>Đăng bài</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align">Thumb Facebook</label>
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="btn btn-success " type="button" id="btnPostContent" onclick="showimg(3);">
+                                <i class="fa fa-check-circle"></i>
+                                <span>Chọn hình</span>
+                            </button>
+                            <div>
+                                <label class="text-danger" id="error-AvatarFB"></label>
+                            </div>
+                            <div style="font-size:12px; color:#Fe0000;">Size đúng: Width:1200px --- Height = 628px</div>
+                        </div>
+                        <div class="col-sm-12" style="margin:20px 0">
+                            <div id="loadImgThumbnailFB" class="files" style="margin:0 auto; width:820px; height:auto;">
+                            </div>
+                            @Html.Hidden("AvatarFB")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item form-group">
+                <label class="col-form-label col-md-2 col-sm-2 label-align"></label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="button" value="Lưu bài" class="btn btn-danger" onclick="savecontent(0); return false;" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@Html.Partial("_modal")
+@section scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="/Scripts/ckeditor.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/daterangepicker.min.js"></script>
+    @Scripts.Render("~/bundles/jspost")
+    <script type="text/javascript">
+        var urlTag = "/Admincp/Tags/GetListTag/q=";
+
+        $(document).ready(function () {
+            initValidate();
+
+            $('#MasterTag').tagsinput({
+                itemValue: 'Id',
+                itemText: 'TagName',
+                nameForInputTag: 'tagdisplayids',
+                typeahead: {
+                    source: function (query) {
+                        if (query.length >= 3) {
+                            return $.get(urlTag + query);
+                        }
+                        else {
+                            return [];
+                        }
+                    }
+                }
+            });
+
+            $('#PublishDate').daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                startDate: new Date(),
+                timePicker: true,
+                timePicker24Hour: true,
+                drops: 'up',
+                locale: {
+                    format: 'DD-MM-YYYY HH:mm'
+                }
+            });
+        });
+
+        function showimg(id) {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("ShowUrlImage", "Content")",
+                data: {
+                    Id:id
+                },
+                success: function (res) {
+                    $('#frmdlg .modal-body').html(res);
+                    $('#frmdlg .modal-title').html('Nhập Url hình');
+                    $('#frmdlg').modal('show');
+                   $("#frmEdit").removeData("validator");
+                    $.validator.unobtrusive.parse(document);
+                    initValidateUrl();
+                }
+            })
+        }
+    </script>
+}

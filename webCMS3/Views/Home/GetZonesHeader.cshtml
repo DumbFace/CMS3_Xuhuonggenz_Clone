@@ -1,0 +1,13 @@
+﻿
+@using System.Web.Configuration;
+@model IEnumerable<webCMS3.Models.tblZone>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+@foreach (var item in Model)
+{
+    string strLink = url + myCommon.FriendlyUrl(item.ZoneName) + "-" + item.Id + "c";
+    <a href="@strLink" title="@item.ZoneName" class="badge">@item.ZoneName</a>
+}
+

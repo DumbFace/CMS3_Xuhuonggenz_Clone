@@ -1,0 +1,37 @@
+﻿@model List<webCMS3.Models.tblNews>
+@using System.Web.Configuration;
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+@if (Model != null)
+{
+<div class="container">
+    <div class="dvHomeFeature">
+        <div class="dvFeatureContent">
+            @foreach (var item in Model)
+            {
+                string strLink = url + item.UrlLink + "-" + item.Id + ".html";
+                <div class="dvFeatureItem mb-2 mb-sm-0">
+                    <div style="position:relative">
+                        <a href="@strLink">
+                            <img src="@item.Avatar" alt="@item.Title" title="@item.Title" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'" />
+                            <div class="dvItemBg" style="background: linear-gradient(180deg, rgba(0,0,0,0) 40%, #000 80%);">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dvFeatureTitle">
+                        <h2>
+                            <a href="@strLink" title="@item.Title">@item.Title</a>
+                        </h2>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+
+}

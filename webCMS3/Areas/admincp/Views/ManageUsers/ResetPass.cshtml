@@ -1,0 +1,26 @@
+﻿@using webCMS3.Models
+@model tblUser
+
+<form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+
+    @Html.Hidden("Id")
+
+    <div class="item form-group">
+        @Html.Label("Mật khẩu mới", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control required" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-4">
+            <input type="button" value="Tạo mật khẩu" class="btn btn-info" onclick="createpass();" />
+            <input type="button" value="Copy" class="btn btn-info" onclick="copypass();" />
+        </div>
+    </div>
+
+    <div class="item form-group">
+        <div class="col-md-6 col-sm-6 offset-md-3">
+            <input type="button" value="Lưu" class="btn btn-primary" onclick="savepass();" />
+        </div>
+    </div>
+
+</form>

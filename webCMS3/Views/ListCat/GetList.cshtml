@@ -1,0 +1,46 @@
+﻿@using MvcPaging;
+@using webCMS3.Models;
+@using System.Web.Configuration;
+
+@model IPagedList<tblHome>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+    int intPost = 1;
+}
+
+@foreach (tblHome tbl in Model)
+{
+    string strLink = url + tbl.UrlLink + "-" + tbl.Id + ".html";
+    string strImg = Url.Content("~/uploads/") + tbl.Avatar;
+
+    <article class="th-themepost" style="margin-top: 10px;">
+        <figure class="th-themepost-img ">
+            <a href="@strLink">
+                <img src="@strImg" class="img-fluid" alt="@tbl.Title">
+            </a>
+        </figure>
+        <div class="th-box">
+            <div class="th-posttitle">
+                <span class="th-number">@intPost</span>
+                <h2><a href="@strLink">@tbl.Title</a></h2>
+            </div>
+            <div class="th-description">
+                <p>@tbl.Teaser</p>
+            </div>
+        </div>
+    </article>
+    intPost++;
+}
+<div class="clearfix"></div>
+
+@if (Model.PageCount > 1)
+{
+    <div class="paging">
+        @Html.Pager(Model.PageSize, Model.PageIndex + 1, Model.TotalItemCount, new AjaxOptions() { UpdateTargetId = "dvList" }).Options(o => o
+           .RouteValues(new { clickPaging = true, ViewBag.IdZone})
+          .DisplayTemplate("Bootstrap4Pagination")
+         .MaxNrOfPages(5)
+        )
+    </div>
+}
+

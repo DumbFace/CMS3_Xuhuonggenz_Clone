@@ -1,0 +1,53 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+@model  IEnumerable<tblHome>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+<div class="row pt-5">
+    <div class="col-12">
+        <div class="th-section-head">
+            <a href="@Url.Content("~/chuyen-muc/tinh-tam")">
+                <h2>Tĩnh tâm</h2>
+            </a>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-8 col-sm-6 col-xs-12 th-mostpost">
+        @foreach (tblHome tbl in Model)
+        {
+            string strLink = url + tbl.UrlLink + "-" + tbl.Id + ".html";
+            string strImg = Url.Content("~/uploads/") + tbl.Avatar;
+
+            <article class="th-themepost th-thumbpost">
+                <figure class="th-themepost-img">
+                    <a href="@strLink">
+                        <img src="@strImg" alt="@tbl.Title" style="max-width: 345px;">
+                    </a>
+                    
+                </figure>
+                <div class="th-contentbox">
+                    <ul class="th-postmatadata">
+                        <li><a href="javascript:;">@tbl.UserName</a></li>
+                        <li><time><a href="javascript:;">@tbl.PublishDate.ToString("dd/MM/yyyy HH:mm")</a></time></li>
+                    </ul>
+                    <div class="th-posttitle">
+                        <h2><a href="@strLink">@tbl.Title</a></h2>
+                    </div>
+                    <div class="th-description">
+                        <p>@tbl.Teaser</p>
+                    </div>
+                </div>
+            </article>
+
+        }
+
+
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <img src="~/Content/Images/ad1.png" />
+    </div>
+</div>

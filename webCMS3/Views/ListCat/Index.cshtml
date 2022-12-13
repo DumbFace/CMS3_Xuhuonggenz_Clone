@@ -1,0 +1,35 @@
+﻿<div id="dvMain">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="th-single-detailv5" id="dvList">
+
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                @{Html.RenderAction("GetLatesNews", "Home"); }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LoadData();
+        });
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetList", "ListCat")",
+                type: "POST",
+                data: {
+                    IdZone:"@ViewBag.IdZone"
+                },
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+    </script>
+}

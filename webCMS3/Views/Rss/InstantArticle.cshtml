@@ -1,0 +1,56 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+@model tblNews
+
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+    string strLink = url + Model.UrlLink + "-" + Model.Id + ".html";
+
+    string strPlacement = WebConfigurationManager.AppSettings["PlacementFB"];
+    Layout = null;
+}
+<!doctype HTML>
+<html lang="en" prefix="op: http://media.facebook.com/op#">
+<head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="@strLink">
+    <meta property="fb:use_automatic_ad_placement" content="enable=true ad_density=default">
+    <meta property="op:markup_version" content="v1.0">
+</head>
+<body>
+    <article>
+        <header>
+            <figure class="op-ad">
+                <iframe src="https://www.facebook.com/adnw_request?placement=@strPlacement&amp;adtype=banner300x250" height="300" width="250"></iframe>
+            </figure>
+            <h1>@Model.Title</h1>
+            <h2>@Model.CategoryName</h2>
+            <time class="op-published" datetime="@Model.PublishDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")+07:00">@Model.PublishDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")+07:00</time>
+            <time class="op-modified" datetime="@Model.UpdateDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")+07:00">@Model.UpdateDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")+07:00</time>
+            <address>@Model.UserName</address>
+        </header>
+        <p><strong>@Model.Teaser</strong></p>
+
+        @Html.Raw(Model.Body)
+        @{
+            var lst = ViewBag.lstRelated;
+
+            if (lst != null)
+            {
+                <h1>Cùng nội dung</h1>
+                <ul class="op-related-articles">
+                    @foreach (tblHome item in lst)
+                    {
+                        string urlRelated = url + "/" + item.UrlLink + "-" + item.Id + ".html";
+                        <li><a href="@urlRelated">@item.Title</a></li>
+                    }
+                </ul>
+            }
+        }
+
+        <footer>
+            <small>Giấy phép thiết lập mạng xã hội trên mạng số 123/GP-BTTTT do Bộ Thông tin và Truyền thông cấp ngày 23/3/2017</small>
+        </footer>
+    </article>
+</body>
+</html>

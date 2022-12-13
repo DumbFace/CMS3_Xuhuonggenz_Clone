@@ -1,0 +1,118 @@
+﻿@using webCMS3.Models
+@{
+    tblUser tbl = MyAuthorize.GetLoggedUser(Context);
+    int intRole = 2;
+    if (tbl != null)
+    {
+        intRole = tbl.IdRole;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hệ thống quản lý web xuhuonggenz</title>
+    @Styles.Render("~/Content/adcss")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="/" class="site_title">
+                            <img src="~/Content/Images/logo-xu-huong-gen-z.png" alt="..." class="img-fluid" width="200">
+                            <div>Xu hướng Genz</div>
+                        </a>
+                      
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class='nav side-menu'>
+                                <li>
+                                    <a><i class='fa fa-folder'></i> Quản lý danh mục<span class='fa fa-chevron-down'></span></a>
+                                    <ul class='nav child_menu' style='display: none'>
+                                        <li><a href='@Url.Content("~/admincp/zone")'>Danh sách chuyên mục</a></li>
+                                        <li><a href='@Url.Content("~/admincp/tags")'>Danh sách tag</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class='fa fa-folder'></i> Bài viết<span class='fa fa-chevron-down'></span></a>
+                                    <ul class='nav child_menu' style='display: none'>
+                                        <li><a href='@Url.Content("~/admincp/content/Add")'>Tạo mới</a></li>
+                                        <li><a href='@Url.Content("~/admincp/content/listdelay")'>Danh sách chờ duyệt</a></li>
+                                        @if (intRole == 1)
+                                        {
+                                            <li><a href='@Url.Content("~/admincp/content/listactive")'>Danh sách đã đăng</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (intRole == 1)
+                                {
+                                    <li>
+                                        <a><i class='fa fa-folder'></i> Quản trị<span class='fa fa-chevron-down'></span></a>
+                                        <ul class='nav child_menu' style='display: none'>
+                                            <li><a href='@Url.Content("~/admincp/ManageUsers")'>Danh sách user </a></li>
+                                            <li><a href='@Url.Content("~/admincp/ConfigWeb")'>Cấu hình web</a></li>
+                                            <li><a href='@Url.Content("~/admincp/SiteMap")'>Tạo sitemap</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="@Url.Content("~/content/images/user.jpg")" alt="">
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="@Url.Content("~/thay-doi-mat-khau")">
+                                        <i class="fa fa-info-circle pull-right"></i>
+                                        Thay đổi mật khẩu
+                                    </a>
+
+                                    @using (Html.BeginForm("Logout", "MyAccount", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                                    {
+                                        <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">
+                                            <i class="fa fa-sign-out pull-right"></i> Thoát
+                                        </a>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="right_col" role="main">
+                @RenderBody()
+            </div>
+            <footer>
+                <div class="pull-right">
+                    AdminCP Túi Khôn Muôn Đời - @DateTime.Now.Year - Version 1.0
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/adbootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+
+
+</html>

@@ -1,0 +1,21 @@
+﻿@{Html.RenderAction("GetArticlesFeature", "Home"); }
+
+<div class="container px-3" style="margin-top:40px">
+    @{ Html.RenderAction("GetThreeArticles", "Home");}
+
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-8">
+            <div id="dvList">
+                @{Html.RenderAction("GetListNews", "Home"); }
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4 mt-4 mt-sm-0">
+            @{Html.RenderAction("GetLatesNews", "Home"); }
+            @Html.Partial("_GetListTag", ViewData["Tags"])
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+}

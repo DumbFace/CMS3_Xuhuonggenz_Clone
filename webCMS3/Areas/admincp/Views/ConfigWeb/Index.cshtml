@@ -1,0 +1,62 @@
+﻿@model  webCMS3.Models.tblConfig
+<div class="clearfix"></div>
+
+<form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+    @Html.Hidden("Id")
+    <div class="item form-group">
+        @Html.Label("Tiêu đề", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.TitleWeb, new { htmlAttributes = new { @class = "form-control required" } })
+            @Html.ValidationMessageFor(model => model.TitleWeb, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="item form-group">
+        @Html.Label("Mô tả", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.DescriptionWeb, new { htmlAttributes = new { @class = "form-control required" } })
+            @Html.ValidationMessageFor(model => model.DescriptionWeb, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="item form-group">
+        <div class="col-md-4 col-sm-4 offset-md-3">
+            <button id="btnCancel" class="btn btn-warning" onclick="$('#frmdlg').modal('hide');return false;"><i class="fa fa-ban"></i>&nbsp;Hủy</button>
+            <button id="btnSave" class="btn btn-primary" onclick="SaveConfig(); return false;"><i class="fa fa-floppy-o"></i>&nbsp;Lưu</button>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        function initValidate() {
+            var submitSettings = $.data($("#frmEdit").get(0), 'validator').settings;
+            submitSettings.messages = {
+                TitleWeb: {
+                    required: "Vui lòng chọn tiêu đề"
+                },
+                DescriptionWeb:  {
+                    required: "Vui lòng nhập mô tả"
+                },
+            };
+        }
+
+
+        function SaveConfig() {
+            if ($("#frmEdit").valid()) {
+                $.ajax({
+                    url: "@Url.Action("UpdateConfig", "ConfigWeb")",
+                    type: "POST",
+                    data: $("#frmEdit").serialize(),
+                    success: function (msg) {
+                        if (msg == "ok") {
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
+        }
+
+        $(document).ready(function () {
+            initValidate();
+        })
+    </script>
+}

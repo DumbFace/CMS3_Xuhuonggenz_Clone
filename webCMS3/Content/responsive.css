@@ -1,0 +1,85 @@
+﻿
+@media (max-width: 480px) {
+    .auth-wrapper .all-wrapper {
+        padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .th-navigation.navbar-collapse {
+        background: #000;
+    }
+
+        .th-navigation.navbar-collapse > ul > li {
+            padding: 10px 15px;
+            border: 0;
+        }
+
+        .th-navigation.navbar-collapse > ul > li {
+            width: 100%;
+        }
+
+    .th-nav > div > ul > li > a {
+        color: #fff !important;
+    }
+
+    .th-navigation > ul > li.th-dropdown > ul, .th-navigation > ul > li.th-megadropdown > ul {
+        padding: 0 15px 0;
+        margin: 10px -15px 0;
+    }
+
+    .th-nav > div > ul > li > .arrow:before {
+        content: '';
+    }
+
+    .th-navigation ul li.th-dropdown ul, .th-navigation ul li.th-megadropdown ul {
+        opacity: 1;
+        clear: both;
+        float: none;
+        border: 0 none;
+        box-shadow: none;
+        border-radius: 0;
+        overflow: hidden;
+        position: static;
+        background: #202020;
+        visibility: visible;
+        width: auto !important;
+    }
+
+    .th-nav ul li ul li {
+        line-height: 33px;
+    }
+
+        .th-nav ul li ul li a {
+            z-index: 1;
+            color: #fff;
+            padding: 0 15px;
+            position: relative;
+        }
+
+    .th-control {
+        bottom: 31px;
+    }
+
+    .th-mostpost .th-contentbox {
+        width: 100%;
+        float: left;
+    }
+
+    .dvFeatureItem{
+        width:100%;
+    }
+
+    .dvFeatureTeaser h3 a{
+        font-size:18px;
+        line-height:24px;
+    }
+
+    .dvTags{
+        float:none;
+    }
+
+    .dvSearch{
+        margin-top:10px;
+    }
+}

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<webCMS3.Models.tblHome>
+@using System.Web.Configuration;
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+@if (Model != null)
+{
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                string strLink = url + item.UrlLink + "-" + item.Id + ".html";
+
+                <div class="col-md-4 dvTop3">
+                    <a href="@strLink">
+                        <img src="@item.Avatar" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'"  />
+                    </a>
+                        <div class="dvTop3Title">
+                            <h2>
+                                <a href="@strLink" title="@item.Title">@item.Title</a>
+                            </h2>
+                        </div>
+                </div>
+            }
+        </div>
+}

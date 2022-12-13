@@ -1,0 +1,43 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+
+@{
+
+}
+
+<div class="container">
+    <h1 class="breadcrumb">
+        Kết quả tìm kiếm: @ViewBag.key
+    </h1>
+    <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            <div class="th-single-detailv5" id="dvList">
+
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            @{Html.RenderAction("GetLatesNews", "Home"); }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LoadData();
+        });
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetList", "Search")",
+                type: "POST",
+                data: {
+                    key:'@Html.Raw(ViewBag.key)'
+                },
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+    </script>
+}

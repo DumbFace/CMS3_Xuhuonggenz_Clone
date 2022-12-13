@@ -1,0 +1,13 @@
+﻿@using System.Web.Configuration;
+@model IEnumerable<webCMS3.Models.tblTag>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+@foreach (var item in Model)
+{
+    string strLink = url + "tag/" + myCommon.FriendlyUrl(item.TagName) + "-" + item.Id + ".html";
+
+        <a href="@strLink" title="@item.TagName" class="badge badge-success ml-0 m-sm-1">@item.TagName</a>
+   
+}

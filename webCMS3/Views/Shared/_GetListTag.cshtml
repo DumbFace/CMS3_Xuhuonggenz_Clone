@@ -1,0 +1,32 @@
+﻿@using System.Web.Configuration;
+@using webCMS3.Models
+@model List<tblTag>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+<div class="th-widget th-mostpopularpost">
+    <div class="th-widgettitle">
+        <p>Tags</p>
+    </div>
+    <ul class="tags">
+        @{
+            if (Model != null)
+            {
+                foreach (tblTag item in Model)
+                {
+                    string strLink = url + "tag/" + myCommon.FriendlyUrl(item.TagName) + "-" + item.Id + ".html";
+                    <li>
+                        <div class="th-contentbox widget">
+                            <ul class="th-postmatadata tag">
+                                <li><a href="@strLink" title="@item.TagName">@item.TagName</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+            }
+        }
+
+    </ul>
+</div>
+

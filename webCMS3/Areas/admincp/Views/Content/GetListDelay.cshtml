@@ -1,0 +1,70 @@
+﻿@using MvcPaging;
+@using webCMS3.Models;
+@using System.Web.Configuration;
+
+@model IPagedList<tblNews>
+<div class="table-responsive">
+    <table class="table table-striped jambo_table bulk_action">
+        <thead class="headings">
+            <tr style="padding: 5px">
+                <th class="column-title w30">Id</th>
+                <th class="column-title">Tiêu đề</th>
+                <th class="column-title w150">Thumb</th>
+                <th class="column-title w150"></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            string url = WebConfigurationManager.AppSettings["UrlHost"] + item.UrlLink + "-" + item.Id + ".html";
+            <tr>
+                <td id="@item.Id">@item.Id</td>
+                <td>
+                    <span class="badge badge-info">Tiêu đề</span>: @item.Title<br />
+                    <span class="badge badge-success">Link</span>: <a href="@url" target="_blank">@url</a> <br />
+                    <span class="badge badge-success">Chuyên mục</span>: @item.ZoneName
+                    @if (item.IsFeature)
+                    {
+                        <br />
+                        <span class="badge badge-warning">Bài viết tiêu điểm</span>
+
+                    }
+                    <br />Ngày xuất bản: @item.PublishDate.ToString("dd/MM/yyyy HH:mm")
+                    <br /> <span>Tags</span>:
+                    @{
+                        if (item.Tags.Count > 0)
+                        {
+                            foreach (var tag in item.Tags)
+                            {
+                                <span class="badge badge-primary">@tag.TagName</span>
+                            }
+                        }
+                    }
+                    <br />Lượr view: @item.ViewCount
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Avatar))
+                    {
+                        <img src="@item.Avatar" width="200" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'" />
+                    }
+                </td>
+
+                <td class="text-right dvAction">
+                    <a href="#" title="Xuất bản bài" onclick="publicnews(@item.Id)"><i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="#" title="Hiệu chỉnh bài" onclick="editcontent(@item.Id)"><i class="fa fa-edit"></i></a>
+                    <a href="#" title="Xóa bài" onclick="deletecontent(@item.Id)"><i class="fa fa-remove"></i></a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@if (Model.PageCount > 1)
+{
+    <div class="paging">
+        @Html.Pager(Model.PageSize, Model.PageIndex + 1, Model.TotalItemCount, new AjaxOptions() { UpdateTargetId = "dvList" }).Options(o => o
+           .RouteValues(new { clickPaging = true, ViewBag.key, ViewBag.fromdate, ViewBag.todate, ViewBag.idtype, ViewBag.chk })
+          .DisplayTemplate("Bootstrap4Pagination")
+         .MaxNrOfPages(5)
+        )
+    </div>
+}

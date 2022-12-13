@@ -1,0 +1,183 @@
+﻿@using webCMS3.Models;
+
+@{
+    ViewBag.Title = "Quản lý user";
+}
+
+<div style="padding-top:20px;">
+    <h3>
+        @ViewBag.Title
+    </h3>
+</div>
+<div style="padding-top:20px;">
+
+</div>
+<div class="form-horizontal form-label-left">
+    <div class="item form-group">
+        @Html.Label("UserName", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            <input type="text" class="form-control pressenter" placeholder="Tìm kiếm thông tin" id="txtSearch" name="txtSearch" enter-handler="LoadData();">
+        </div>
+    </div>
+    <div class="item form-group">
+        @Html.Label("Role", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            <select id="cbRole" class="form-control">
+                <option value="">Tất cả</option>
+                <option value="1" >Quản trị</option>
+                <option value="2">User</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-info" onclick="LoadData();">Tìm kiếm</button>
+        </div>
+    </div>
+    <div class="item form-group ">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AddUser", "ManageUsers")'">Thêm mới user</button>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div id="dvList" style="padding-top:20px;">
+</div>
+@Html.Partial("_modal")
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        function initReset() {
+            var submitSettings = $.data($("#frmEdit").get(0), 'validator').settings;
+
+            submitSettings.messages = {
+                Password: {
+                    required: "Vui lòng nhập mật khẩu"
+                },
+            };
+        }
+
+        function resetpass(id) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Content("~/admincp/manageusers/resetPass?id=")" + id,
+                success: function (res) {
+                    $('#frmdlg .modal-body').html(res);
+                    $('#frmdlg .modal-title').html("Cập nhật mật khẩu");
+                    $('#frmdlg').modal('show');
+                    $("#frmEdit").removeData("validator");
+                    $.validator.unobtrusive.parse(document);
+                    initReset();
+                }
+            })
+        }
+
+        function copypass() {
+            var txt = document.getElementById("Password");
+            txt.select();
+            txt.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("copy");
+            bootbox.alert("Đã copy vào clipboard: " + txt.value);
+        }
+
+        function createpass() {
+            $.ajax({
+                url: "@Url.Action("GetPassword", "ManageUsers")",
+                type: "POST",
+                success: function (msg) {
+                    $("#Password").val(msg);
+                }
+            })
+        }
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetListUser", "ManageUsers")",
+                type: "POST",
+                data: {
+                    role: $("#cbRole").val(),
+                    name: $("#txtSearch").val()
+                },
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+
+        function savepass() {
+            if ($("#frmEdit").valid()) {
+                $.ajax({
+                    url: "@Url.Action("UpdatePass", "ManageUsers")",
+                    type: "POST",
+                    data: {
+                        Id: $("#Id").val(),
+                        str:$("#Password").val()
+                    },
+                    success: function (msg) {
+                        if (msg == "ok") {
+                            $('#frmdlg .modal-body').html('');
+                            $('#frmdlg .modal-title').html('');
+                            $('#frmdlg').modal('hide');
+                            LoadData();
+                        }
+                    }
+                })
+            }
+        }
+
+        function deluser(id) {
+             bootbox.confirm("Bạn có muốn xoá tài khoản nàykhông?", function (result) {
+                if (result == true) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveUser", "ManageUsers")",
+                        type: "POST",
+                        data: {
+                            Id: id,
+                        },
+                        success: function (msg) {
+                            if (msg == "ok") {
+                                LoadData();
+                            }
+                        }
+                    })
+                }
+            });
+        }
+
+        function roleuser(id) {
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Content("~/admincp/manageusers/showroleuser?id=")" + id,
+                success: function (res) {
+                    $('#frmdlg .modal-body').html(res);
+                    $('#frmdlg .modal-title').html("Thay đổi quyền hạn");
+                    $('#frmdlg').modal('show');
+                }
+            })
+        }
+
+        function saverole() {
+            $.ajax({
+                url: "@Url.Action("UpdateRoleUser", "ManageUsers")",
+                type: "POST",
+                data: {
+                    Id: $("#Id").val(),
+                    IdRole: $("#IdRole").val()
+                    },
+                success: function (msg) {
+                    if (msg == "ok") {
+                        $('#frmdlg .modal-body').html('');
+                        $('#frmdlg .modal-title').html('');
+                        $('#frmdlg').modal('hide');
+                        LoadData();
+                    }
+                }
+            })
+        }
+
+
+        $(document).ready(function () {
+            LoadData();
+        })
+    </script>
+}

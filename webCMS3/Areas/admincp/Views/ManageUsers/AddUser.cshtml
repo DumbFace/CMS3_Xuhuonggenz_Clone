@@ -1,0 +1,144 @@
+﻿@using webCMS3.Models
+@model tblUser
+
+<div class="x_panel">
+    <div class="x_title">
+        <h3>
+            Thêm mới user
+        </h3>
+    </div>
+    <div class="x_content">
+        <form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+            @Html.HiddenFor(model => model.Id)
+            <div class="item form-group">
+                @Html.Label("UserName", htmlAttributes: new { @class = "col-form-label col-md-4 col-sm-4 label-align" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control required" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="item form-group">
+                @Html.Label("Phân quyền", htmlAttributes: new { @class = "col-form-label col-md-4 col-sm-4 label-align" })
+                <div class="col-md-4">
+                    <select id="IdRole" name="IdRole" class="form-control">
+                        <option value="1">Quản trị</option>
+                        <option value="2" selected>User</option>
+                    </select>
+                </div>
+            </div>
+            <div class="item form-group">
+                @Html.Label("Mật khẩu", htmlAttributes: new { @class = "col-form-label col-md-4 col-sm-4 label-align" })
+                <div class="col-md-4">
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control required" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="item form-group">
+                @Html.Label("Nhập lại mật khẩu", htmlAttributes: new { @class = "col-form-label col-md-4 col-sm-4 label-align" })
+                <div class="col-md-4">
+                    @Html.Password("RePassword", null, new { @class = "form-control required" })
+                    @Html.ValidationMessage("RePassword", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="item form-group">
+                <div class="col-md-4 col-sm-4 offset-md-4">
+                    <input type="button" value="Thêm mới" class="btn btn-info" onclick="saveuser();" />
+                    <input type="button" value="Tạo mật khẩu" class="btn btn-success" onclick="createpass();" />
+                    <input type="button" value="Copy" class="btn btn-info" onclick="copypass();" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript">
+        function initValidate() {
+            var submitSettings = $.data($("#frmEdit").get(0), 'validator').settings;
+            submitSettings.rules = {
+                Password: {
+                    minlength: 6,
+                },
+                RePassword: {
+                    minlength: 6,
+                    equalTo: "#Password"
+                },
+            };
+            submitSettings.messages = {
+                UserName: {
+                    required: "Vui lòng nhập username"
+                },
+                Password: {
+                    required: "Vui lòng nhập mật khẩu",
+                    minlength: "Độ dài tối thiểu mật khẩu là 6 kí tự."
+                },
+                RePassword: {
+                    required: "Vui lòng nhập mật khẩu",
+                    minlength: "Độ dài tối thiểu mật khẩu là 6 kí tự.",
+                    equalTo: "Mật khẩu không khớp"
+                },
+            };
+            submitSettings.highlight = function (e) {
+                $(e).closest('.form-group').find(".form-control:first").addClass('is-invalid');
+            };
+            submitSettings.unhighlight = function (e) {
+                $(e).closest('.form-group').find(".form-control:first").removeClass('is-invalid');
+                $(e).closest('.form-group').find(".form-control:first").addClass('is-valid');
+            };
+        }
+
+        function copypass() {
+            var txt = document.getElementById("Password");
+            txt.select();
+            txt.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("copy");
+            bootbox.alert("Đã copy vào clipboard: " + txt.value);
+        }
+
+        function createpass() {
+            $.ajax({
+                url: "@Url.Action("GetPassword", "ManageUsers")",
+                type: "POST",
+                success: function (msg) {
+                    $("#Password").val(msg);
+                    $("#RePassword").val(msg);
+                }
+            })
+        }
+
+        function saveuser() {
+            if ($("#frmEdit").valid()) {
+                $.ajax({
+                    url: "@Url.Action("IsExistUserName", "ManageUsers")",
+                    data: {
+                        str: $("#UserName").val()
+                    },
+                    type: "POST",
+                    success: function (msg) {
+                        if (msg == "ok") {
+                            $.ajax({
+                                url: "@Url.Action("InsUser", "ManageUsers")" + "?" + $("#frmEdit").serialize(),
+                                type: "POST",
+                                success: function (msg) {
+                                    if (msg == "ok") {
+                                        window.location.href = "@Url.Content("~/admincp/manageusers")";
+                                    }
+                                }
+                            })
+                        } else {
+                            bootbox.alert("Thông tin username đã tồn tại. Vui lòng kiểm tra lại");
+                        }
+                    }
+                })
+            }
+        }
+
+        $(document).ready(function () {
+            initValidate();
+        })
+    </script>
+}
+

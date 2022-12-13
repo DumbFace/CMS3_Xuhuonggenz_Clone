@@ -1,0 +1,55 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+@model  tblZone
+
+@{
+    DateTime dt = (DateTime)ViewBag.PubDate;
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+    string strLink = url + myCommon.FriendlyUrl(Model.ZoneName) + "-" + Model.Id + "c";
+}
+
+<script type="application/ld+json">
+        {
+        "@@context": "https://schema.org",
+        "@@type": "WebPage",
+        "name": "@Html.Raw(ViewBag.Title)",
+        "description": "@Html.Raw(ViewBag.Description)",
+        "url": "@strLink",
+        "datePublished": "@dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")",
+        "dateModified": "@dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")"
+        }
+</script>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            <div class="th-single-detailv5" id="dvList">
+
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            @{Html.RenderAction("GetLatesNews", "Home"); }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LoadData();
+        });
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetList", "Zones")",
+                type: "POST",
+                data: {
+                    Id:@Model.Id
+                },
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+    </script>
+}

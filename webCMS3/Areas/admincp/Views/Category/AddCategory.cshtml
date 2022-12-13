@@ -1,0 +1,28 @@
+﻿@model  webCMS3.Models.tblCategory
+
+<form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+    @Html.Hidden("Id")
+    <div class="item form-group">
+        @Html.Label("Chuyên mục", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            @Html.DropDownList("IdZone", new SelectList(new myfunc().GetListZone(), "Id", "ZoneName"), "--- Chọn chuyên mục---", new { @class = "form-control required" })
+            @Html.ValidationMessageFor(model => model.IdZone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="item form-group">
+        @Html.Label("Chuyên mục con", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control required" } })
+            @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="item form-group">
+        <div class="col-md-4 col-sm-4 offset-md-3">
+            <button id="btnCancel" class="btn btn-warning" onclick="$('#frmdlg').modal('hide');return false;"><i class="fa fa-ban"></i>&nbsp;Hủy</button>
+            <button id="btnSave" class="btn btn-primary" onclick="SaveCategory(); return false;"><i class="fa fa-floppy-o"></i>&nbsp;Lưu</button>
+        </div>
+    </div>
+</form>
+
+

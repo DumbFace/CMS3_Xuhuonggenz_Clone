@@ -1,0 +1,29 @@
+﻿@using webCMS3.Models
+@model tblUser
+
+<form id="frmEdit" class="form-horizontal form-label-left" style="padding-top:15px">
+    @Html.Hidden("Id")
+    <div class="item form-group">
+        @Html.Label("UserName", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control required", @readonly = "readonly" } })
+        </div>
+    </div>
+    <div class="item form-group">
+        @Html.Label("Phân quyền", htmlAttributes: new { @class = "col-form-label col-md-3 col-sm-3 label-align" })
+        <div class="col-md-6">
+            <select id="IdRole" name="IdRole" class="form-control">
+                <option value="1" @(Model.IdRole == 1 ? "selected" : "")>Quản trị</option>
+                <option value="2" @(Model.IdRole == 2 ? "selected" : "")>User</option>
+            </select>
+        </div>
+    </div>
+    <div class="item form-group">
+        <div class="col-md-6 col-sm-6 offset-md-3">
+            <input type="button" value="Cập nhật" class="btn btn-info" onclick="saverole();" />
+        </div>
+    </div>
+
+</form>
+
+

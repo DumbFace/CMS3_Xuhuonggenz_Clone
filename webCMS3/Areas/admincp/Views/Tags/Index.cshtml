@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Danh sách tag";
+}
+
+<div style="padding-top:20px;">
+    <div class="col-md-5">
+        <h3>
+            @ViewBag.Title
+        </h3>
+    </div>
+    <div class="col-md-7 text-right">
+        <button type="button" class="btn btn-info" onclick="AddTag(0); return false;">Thêm mới</button>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div id="dvList" style="padding-top:20px;">
+</div>
+@Html.Partial("_modal")
+@section scripts{
+    <script type="text/javascript">
+        function initValidate() {
+            var submitSettings = $.data($("#frmEdit").get(0), 'validator').settings;
+
+            submitSettings.messages = {
+                TagName: {
+                    required: "Vui lòng nhập tên tag"
+                },
+            };
+        }
+
+        function AddTag(id) {
+            var title = id == 0 ? "Thêm mới tag" : "Hiệu chỉnh thông tin";
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AddTag", "Tags")",
+                data: {
+                    Id:id
+                },
+                success: function (res) {
+                    $('#frmdlg .modal-body').html(res);
+                    $('#frmdlg .modal-title').html(title);
+                    $('#frmdlg').modal('show');
+                    $("#frmEdit").removeData("validator");
+                    $.validator.unobtrusive.parse(document);
+                    initValidate();
+                }
+            })
+        }
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetList", "Tags")",
+                type: "POST",
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+
+        function SaveTag() {
+            if ($("#frmEdit").valid()) {
+                $.ajax({
+                    url: "@Url.Action("SaveTag", "Tags")" + "?" + $("#frmEdit").serialize(),
+                    type: "POST",
+                    success: function (msg) {
+                        if (msg == "ok") {
+                            $('#frmdlg').modal('hide');
+                            LoadData();
+                        }
+                    }
+                })
+            }
+        }
+
+        function DeleteTag(id) {
+            bootbox.confirm("Bạn có muốn xóa thông tin hiện hành?", function (result) {
+                if (result == true) {
+                    $.ajax({
+                        url: "@Url.Action("DeleteTag", "Tags")",
+                        type: "POST",
+                        data: {
+                            Id: id,
+                        },
+                        success: function (msg) {
+                            if (msg == "ok") {
+                                LoadData();
+                            }
+                        }
+                    })
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            LoadData();
+        })
+    </script>
+}

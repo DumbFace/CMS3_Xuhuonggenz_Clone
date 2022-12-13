@@ -1,0 +1,43 @@
+﻿@using webCMS3.Models
+@using MvcPaging;
+
+@model IPagedList<tblTag>
+
+
+<div class="table-responsive">
+    <table class="table table-striped jambo_table bulk_action">
+        <thead class="headings">
+            <tr style="padding: 5px">
+                <th class="column-title w200">Tag</th>
+                <th class="column-title">Mô tả</th>
+                <th class="column-title w200"></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td id="@item.Id">@item.TagName</td>
+                <td>
+                    @item.Description
+                </td>
+
+                <td class="text-right dvAction">
+                    <button class="btn btn-info" onclick="AddTag('@item.Id')"><i class="fa fa-pencil"></i> Sửa </button>
+                    <button class="btn btn-danger" onclick="DeleteTag('@item.Id')"><i class="fa fa-remove"></i> Xoá </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@if (Model.PageCount > 1)
+{
+    <div class="paging">
+        @Html.Pager(Model.PageSize, Model.PageIndex + 1, Model.TotalItemCount, new AjaxOptions() { UpdateTargetId = "dvList" }).Options(o => o
+           .RouteValues(new { clickPaging = true })
+          .DisplayTemplate("Bootstrap4Pagination")
+         .MaxNrOfPages(5)
+        )
+    </div>
+}
+

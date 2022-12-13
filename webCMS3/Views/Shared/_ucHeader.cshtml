@@ -1,0 +1,59 @@
+﻿@using System.Web.Configuration;
+@using webCMS3.Models;
+
+<header class="th-header">
+    <div class="container">
+        <div class="dvLogo text-center">
+            <a href="/">
+                <img class="ml-md-0 float-sm-left" src="~/Content/Images/logo-xu-huong-gen-z.png" alt="" height="68" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'">
+            </a>
+        </div>
+        <div class="dvTags d-lg-block">
+            @{Html.RenderAction("GetTagsHeader", "Home"); }
+        </div>
+        <div class="float-sm-right">
+            <form class="dvSearch" id="frmSearh">
+                <input id="txtKey" type="text" name="q" placeholder="Tìm kiếm..." autocomplete="off" class="form-control text-left text-md-left" onkeypress="return runScript(event);">
+                <button class="btn" id="btn-search" type="button" onclick="SearchData(); return false;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</header>
+<div class="dvHeader">
+    <div class="container py-0">
+        <nav class="navbar navbar-expand-lg navbar-light py-2 justify-content-end px-0 mx-0">
+            <button class="navbar-toggler bg-light" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-start" id="navbarsExample09">
+                <ul class="navbar-nav">
+                    @if (ViewBag.showHead == 1)
+                    {
+                        <li class="nav-item mr-5 d-none d-lg-block"><a href="/" class="nav-link p-0 highlight-zone">Trang chủ</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item mr-5 d-none d-lg-block"><a href="/" class="nav-link p-0">Trang chủ</a></li>
+                    }
+                    @foreach (tblZone tbl in ViewBag.Zones)
+                    {
+                        string strUrl = myCommon.FriendlyUrlZone(tbl.ZoneName, tbl.Id);
+                        if (ViewBag.whichZoneHighlight == tbl.Id)
+                        {
+                            <li class="nav-item mr-5"><a href="@strUrl" class="nav-link p-0 highlight-zone">@tbl.ZoneName</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item mr-5"><a href="@strUrl" class="nav-link p-0">@tbl.ZoneName</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+</div>
+

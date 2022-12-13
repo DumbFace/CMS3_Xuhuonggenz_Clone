@@ -1,0 +1,25 @@
+﻿
+@model IEnumerable<webCMS3.Models.tblCategory>
+
+<table class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr class="headings">
+            <th class="column-title">Chuyên mục con </th>
+            <th class="column-title" style="width:200px">
+                &nbsp;
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CategoryName</td>
+            <td>
+                <button class="btn btn-info" onclick="AddCategory('@item.Id')"><i class="fa fa-pencil"></i> Sửa </button>
+                <button class="btn btn-danger" onclick="DeleteCategory('@item.Id')"><i class="fa fa-remove"></i> Xoá </button>
+            </td>
+        </tr>
+    }
+</table>
+
+

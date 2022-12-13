@@ -1,0 +1,151 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+@model  tblNews
+
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+    string strImg = Url.Content("~/uploads/") + Model.Avatar;
+    string strLink = url + Model.UrlLink + "-" + Model.Id + ".html";
+}
+
+<script type="application/ld+json">
+    {
+    "@@context": "https://schema.org",
+    "@@type": "NewsArticle",
+    "mainEntityOfPage":    [    {    "@@type":"WebPage",    "@@id":"@strLink"    }    ],
+    "description": "@Model.Teaser",
+    "headline": "@Model.Title",
+    "datePublished": "@Model.PublishDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")",
+    "dateModified": "@Model.PublishDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK")",
+    "author": {
+        "@@type": "Person",
+        "name": "@Model.UserName"
+    },
+    "publisher": {
+    "@@type": "Organization",
+    "name": "XUHUONGGENZ",
+    "logo": {
+        "@@type": "ImageObject",
+        "url": "https://xuhuonggenz.com/content/images/no-image.jpg"
+    }
+    },
+    "image": {
+        "@@type": "ImageObject",
+        "url": "@Model.Avatar"
+        }
+    }
+</script>
+<div id="dvMain">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="reading-post">
+                    <div class="th-posttitle">
+                        <h1>@Model.Title</h1>
+                        <p class="lh-35 teaser">@Model.Teaser</p>
+                        <ul class="th-postmatadata">
+                            <li><a href="javascript:;">@Model.UserName</a></li>
+                            <li><time>@Model.PublishDate.ToString("dd/MM/yyyy HH:mm")</time></li>
+                        </ul>
+                    </div>
+                    <article class="th-themepost th-postdetail" data-title="@Model.Title">
+                        <figure class="th-themepost-img">
+                            <img src="@Model.Avatar" alt="@Model.Title" title="@Model.Title" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'">
+                        </figure>
+                        <a href="#">
+                            <h5>@Model.CategoryName</h5>
+                        </a>
+
+                        <div class="th-description" id="dvContent">
+                            @Html.Raw(Model.Body)
+                        </div>
+                    </article>
+                    <div class="th-tags">
+                        <label class=""> Tag: </label>
+                        @if (Model.Tags != null)
+                        {
+                            foreach (tblTag tbl in Model.Tags)
+                            {
+                                string urlTag = Url.Content("~/tag/") + myCommon.FriendlyUrl(tbl.TagName) + "-" + tbl.Id.ToString() + ".html";
+
+                                <h3>
+                                    <a class="badge badge-success" href="@urlTag" title="@tbl.TagName">
+                                        @tbl.TagName
+                                    </a>
+                                </h3>
+                            }
+                        }
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="th-relatedpost">
+                        <div class="th-heading">
+                            <p>Bài viết liên quan</p>
+                        </div>
+                        <div id="th-relatedpost-slider" class="th-relatedpost-slider">
+                            <div class="swiper-wrapper">
+                                @if (ViewBag.lstRelated != null)
+                                {
+                                    foreach (tblHome obj in ViewBag.lstRelated)
+                                    {
+                                        string strLink1 = url + obj.UrlLink + "-" + obj.Id + ".html";
+
+                                        <div class="swiper-slide">
+                                            <article class="th-themepost">
+                                                <figure class="th-themepost-img">
+                                                    <a href="@strLink1">
+                                                        <img alt="@obj.Title" title="@obj.Title" width="100" class="img-fluid" src="@obj.Avatar" onerror="this.onerror=null; this.src='/content/images/no-image.jpg'">
+                                                    </a>
+                                                </figure>
+                                                <ul class="th-postmatadata">
+                                                    <li><a href="javascript:;">@obj.UserName</a></li>
+                                                    <li>
+                                                        <time>
+                                                            <a href="javascript:;">@obj.PublishDate.ToString("dd/MM/yyyy HH:mm")</a>
+                                                        </time>
+                                                    </li>
+                                                </ul>
+                                                <div class="th-posttitle mini">
+                                                    <h4><a href="@strLink1">@obj.Title</a></h4>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                            <div class="th-rbtnslidernext"><span></span></div>
+                            <div class="th-rbtnsliderprev"><span></span></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="th-postcomments" class="th-postcomments">
+                        <div class="fb-comments" data-href="@strLink" data-width="100%" data-numposts="5"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                @{Html.RenderAction("GetLatesNews", "Home"); }
+                @Html.Partial("_GetListTag", ViewData["Tags"])
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var swiper = new Swiper('#th-relatedpost-slider',
+            {
+                nextButton: ".th-rbtnslidernext",
+                prevButton: ".th-rbtnsliderprev",
+                slidesPerView: 3,
+                spaceBetween: 15,
+                autoplay: 2500,
+                breakpoints: {
+                    320: { slidesPerView: 1, spaceBetweenSlides: 10 },
+                    480: { slidesPerView: 1, spaceBetweenSlides: 20 },
+                    640: { slidesPerView: 2, spaceBetweenSlides: 30 },
+                    991: { slidesPerView: 3 }
+                },
+            });
+    </script>
+}

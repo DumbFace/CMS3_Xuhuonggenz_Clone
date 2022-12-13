@@ -1,0 +1,98 @@
+[
+  {
+    "outputFileName": "Content/font-awesome.min.css",
+    "inputFiles": [
+      "Content/font-awesome.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/custom.min.js",
+    "inputFiles": [
+      "Scripts/custom.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/customad.min.css",
+    "inputFiles": [
+      "Content/customad.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/custom.min.css",
+    "inputFiles": [
+      "Content/custom.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/daterangepicker.min.css",
+    "inputFiles": [
+      "Content/daterangepicker.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/daterangepicker.min.js",
+    "inputFiles": [
+      "Scripts/daterangepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery.Jcrop.min.js",
+    "inputFiles": [
+      "Scripts/jquery.Jcrop.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/myupload.min.js",
+    "inputFiles": [
+      "Scripts/myupload.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/jquery.fileupload.min.css",
+    "inputFiles": [
+      "Content/jquery.fileupload.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/jquery.Jcrop.min.css",
+    "inputFiles": [
+      "Content/jquery.Jcrop.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jsContent.min.js",
+    "inputFiles": [
+      "Scripts/jsContent.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Site.min.css",
+    "inputFiles": [
+      "Content/Site.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/font.min.css",
+    "inputFiles": [
+      "Content/font.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/responsive.min.css",
+    "inputFiles": [
+      "Content/responsive.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/style.min.css",
+    "inputFiles": [
+      "Content/style.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/stylehome.min.css",
+    "inputFiles": [
+      "Content/stylehome.css"
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Html.Raw(ViewBag.Title)</title>
+    <meta content="index,follow" name="robots" />
+    <meta property="article:published_time" content="@ViewBag.Published" />
+    <meta http-equiv="Content-Language" content="vi">
+    <link rel="canonical" href="@ViewBag.url" />
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/Content/Images/logo-xu-huong-gen-z.png")" />
+    <meta name="description" content="@Html.Raw(ViewBag.Description)">
+    <meta property="og:title" content="@Html.Raw(ViewBag.Title)" />
+    <meta property="og:description" content="@Html.Raw(ViewBag.Description)" />
+    <meta property="og:url" content="@ViewBag.url" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="@ViewBag.Image" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJR7JVZ0YH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-JJR7JVZ0YH');
+    </script>
+    @Styles.Render("~/Content/csshome")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @Html.Partial("_ucHeader")
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type"   : "Organization",
+        "name"     :"XUHUONGGENZ",
+        "alternateName": "xuhuonggenz: Tổng hợp tin tức giới trẻ",
+        "url"      : "https://xuhuonggenz.com/",
+        "description": "Tổng hợp xu hướng, trending, nhân vật nổi tiếng, địa điểm ăn uống, vui chơi của giới trẻ trên các trang mạng xã hội hiện nay",
+        "logo"     : "https://xuhuonggenz.com/content/images/no-image.jpg",
+        "contactPoint": [
+        {
+        "@@type": "ContactPoint",
+        "contactType": "customer service"
+        }
+        ],
+        "sameAs"    :["https://twitter.com/xuhuonggenz","https://www.flickr.com/people/195932389@N03/","https://xuhuonggenz.tumblr.com/","https://www.reddit.com/user/xuhuonggenz","https://www.facebook.com/xxuhuonggenz/","https://www.instagram.com/xuhuonggenz/","https://www.youtube.com/channel/UC9nXq0ehqePojPiyBkffBdQ","https://www.dailymotion.com/xuhuonggenz", "@Html.Raw("https://www.tiktok.com/@xxuhuonggenz")", "https://xuhuonggenz.business.site/?m=true"],
+        "foundingDate"  :"2022",
+        "address" : [
+        {
+        "@@type"    :"PostalAddress",
+        "streetAddress": "38/6A Nguyễn Văn Trỗi, Phường 15, Quận Phú Nhuận, TP. Hồ Chí Minh",
+        "addressLocality":"Hồ Chí Minh City",
+        "addressCountry": "Việt Nam",
+        "postalCode":"72209",
+        "email":"xuhuonggenz@gmail.com"
+        }
+        ]
+    }
+    </script>
+
+    <div id="dvMain">
+        @RenderBody()
+    </div>
+    @Html.Partial("_ucFooter")
+
+    @Scripts.Render("~/bundles/jshome")
+    <script type="text/javascript">
+        function runScript(e) {
+            if (e.keyCode == 13) {
+                SearchData();
+                return false;
+            }
+        }
+
+        function SearchData() {
+            var txt = $("#txtKey").val();
+
+            if (txt == "") {
+                alert("Vui lòng nhập nội dung cần tìm kiếm");
+            }
+            else {
+                window.location.href = "@Url.Content("~/tim-kiem/q=")" + encodeURIComponent(txt);
+            }
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

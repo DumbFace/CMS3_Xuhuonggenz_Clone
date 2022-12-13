@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Quản lý bài đã đăng";
+}
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
+
+<div class="x_panel">
+    <div class="x_title">
+        <h3>
+            @ViewBag.Title
+        </h3>
+    </div>
+    <div class="x_content">
+        <div class="form-horizontal form-label-left">
+            <div class="item form-group">
+                @Html.Label("Từ khoá", htmlAttributes: new { @class = "col-form-label col-md-2 col-sm-2 label-align" })
+                <div class="col-md-4">
+                    <input type="text" class="form-control pressenter" placeholder="Nhập từ khoá tìm theo tiêu đề, Id bài viết" id="txtSearch" name="txtSearch" enter-handler="LoadData();">
+                </div>
+                @Html.Label("Chuyên mục", htmlAttributes: new { @class = "col-form-label col-md-2 col-sm-2 label-align" })
+                <div class="col-md-4">
+                    @Html.DropDownList("IdZone", new SelectList(new myfunc().GetListZone(), "Id", "ZoneName"), "--- Chọn chuyên mục ---", new { @class = "form-control required" })
+                </div>
+            </div>
+            <div class="item form-group">
+                @Html.Label("Từ ngày", htmlAttributes: new { @class = "col-form-label col-md-2 col-sm-2 label-align" })
+                <div class="col-sm-4">
+                    <div class="input-group date" id="dateFrom">
+                        @Html.TextBox("fromdate", DateTime.Now.AddDays(-15).ToString("yyyy/MM/dd"), new { @class = "form-control", @readonly = "readonly" })
+                        <span class="input-group-addon add-on">
+                            <i class="fa fa-calendar icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+                @Html.Label("Đến ngày", htmlAttributes: new { @class = "col-form-label col-md-2 col-sm-2 label-align" })
+                <div class="col-sm-4">
+                    <div class="input-group date" id="dateFrom">
+                        @Html.TextBox("todate", DateTime.Now.ToString("yyyy/MM/dd"), new { @class = "form-control", @readonly = "readonly" })
+                        <span class="input-group-addon add-on">
+                            <i class="fa fa-calendar icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item form-group">
+                <div class="col-md-6 col-sm-6 offset-md-2">
+                    <button type="button" class="btn btn-success" onclick="LoadData(); return false;">Lọc dữ liệu</button>
+                </div>
+            </div>
+        </div>
+        <div id="dvList"></div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/daterangepicker.min.js"></script>
+    <script type="text/javascript">
+
+        function editcontent(id) {
+            window.location.href = "/admincp/content/update?id=" + id;
+        }
+
+        function LoadData() {
+            $.ajax({
+                url: "@Url.Action("GetListActive", "Content")",
+                type: "POST",
+                data: {
+                    key: $("#txtSearch").val(),
+                    fromdate: $("#fromdate").val(),
+                    todate: $("#todate").val(),
+                    idzone:$("#IdZone").val()
+                },
+                success: function (msg) {
+                    $("#dvList").html(msg);
+                }
+            })
+        }
+
+        function deletecontent(id) {
+            bootbox.confirm("Bạn có muốn xóa xóa bài viết không?", function (result) {
+                if (result == true) {
+                    $.ajax({
+                        url: "@Url.Action("DeleteNews", "Content")",
+                        type: "POST",
+                        data: {
+                            Id: id,
+                        },
+                        success: function () {
+                            LoadData();
+                        }
+                    })
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#fromdate').daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                showDropdowns:true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+            $('#todate').daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+            LoadData();
+        })
+
+
+    </script>
+}

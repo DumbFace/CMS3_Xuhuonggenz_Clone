@@ -1,0 +1,49 @@
+﻿@using MvcPaging;
+@using webCMS3.Models
+@using System.Web.Configuration;
+
+@model IPagedList<tblHome>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+@foreach (tblHome tbl in Model)
+{
+    string strLink = url + tbl.UrlLink + "-" + tbl.Id + ".html";
+
+    <article class="th-themepost" style="margin-top: 10px;">
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <figure class="th-themepost-img ">
+                    <a href="@strLink" title="@tbl.Title">
+                        <img src="@tbl.Avatar" class="img-fluid" alt="@tbl.Title" title="@tbl.Title"
+                             onerror="this.onerror=null; this.src='/content/images/no-image.jpg'">
+                    </a>
+                </figure>
+            </div>
+            <div class="col-12 col-sm-8">
+                <div class="th-box">
+                    <div class="th-posttitle">
+                        <h2><a href="@strLink" title="@tbl.Title">@tbl.Title</a></h2>
+                    </div>
+                    <div class="th-description">
+                        <p class="line-clamp-3">@tbl.Teaser</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+}
+<div class="clearfix"></div>
+
+@if (Model.PageCount > 1)
+{
+    <div class="paging">
+        @Html.Pager(Model.PageSize, Model.PageIndex + 1, Model.TotalItemCount, new AjaxOptions() { UpdateTargetId = "dvList" }).Options(o => o
+           .RouteValues(new { clickPaging = true, ViewBag.Id })
+          .DisplayTemplate("Bootstrap4Pagination")
+         .MaxNrOfPages(5)
+        )
+    </div>
+}
+

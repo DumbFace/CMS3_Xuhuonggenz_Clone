@@ -1,0 +1,42 @@
+﻿@using System.Web.Configuration;
+@using webCMS3.Models
+@model List<tblHome>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+
+<div class="th-widget th-mostpopularpost mb-2">
+    <div class="th-widgettitle">
+        <p>Tin đọc nhiều nhất</p>
+    </div>
+    <ul>
+        @foreach (tblHome tbl in Model)
+        {
+            string strLink = url + tbl.UrlLink + "-" + tbl.Id + ".html";
+            <li>
+                <div class="row">
+                    <div class="col-12 col-md-5 col-xl-4">
+                        <figure class="mr-0">
+                            <a href="@strLink" title="@tbl.Title">
+                                <img src="@tbl.Avatar" alt="@tbl.Title" title="@tbl.Title"
+                                     onerror="this.onerror=null; this.src='/content/images/no-image.jpg'">
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="col-12 col-md-7 col-xl-8">
+                        <div class="th-contentbox widget mt-2 mt-sm-0 p-sm-0 px-sm-2">
+                            <div class="th-posttitle mini">
+                                <h4 style="text-align:justify"><a href="@strLink" title="@tbl.Title">@tbl.Title</a></h4>
+                            </div>
+                            <ul class="th-postmatadata">
+                                <li><a href="javascript:;">@tbl.UserName</a></li>
+                                <li><time><a href="#">@tbl.PublishDate.ToString("dd/MM/yyyy HH:mm")</a></time></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,37 @@
+﻿@using System.Web.Configuration;
+@{
+    string FooterDescription = MyCacheFunc.GetConfigWeb().DescriptionWeb;
+}
+<footer id="th-footer" class="th-footer">
+
+    <div class="th-footerbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-7">
+                    <div class="th-copyright">
+                        @if (ViewBag.isReadingSite == 1 || ViewBag.isSearchingSite == 1 || ViewBag.isTaggingSite == 1)
+                        {
+                            <p class="mb-0 footer-title-web">Xu Hướng Genz</p>
+                        }
+                        else
+                        {
+                            <h1 class="mb-0">Xu Hướng Genz</h1>
+                        }
+                    </div>
+                    <div>
+                        @FooterDescription
+                    </div>
+                    <div>Email: xuhuonggenz@gmail.com</div>
+                </div>
+                <div class="col-12 col-sm-3 mt-1 mt-md-0">
+                    @{Html.RenderAction("GetTagsView", "Home"); }
+                </div>
+                <div class="col-12 col-sm-2 text-center link">
+                    <img src="~/Content/Images/logo-xu-huong-gen-z.png" class="img-fluid" width="100" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</footer>

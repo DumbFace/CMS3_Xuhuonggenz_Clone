@@ -1,0 +1,44 @@
+﻿@using webCMS3.Models
+@using System.Web.Configuration;
+@model  IEnumerable<tblHome>
+@{
+    string url = WebConfigurationManager.AppSettings["UrlHost"];
+}
+<div id="th-home-slider" class="th-home-slider ">
+    <div class="swiper-wrapper">
+        @foreach (tblHome tbl in Model)
+        {
+            string strLink = url + tbl.UrlLink + "-" + tbl.Id +".html";
+            string strImg = Url.Content("~/uploads/") + tbl.Avatar;
+            <article class="swiper-slide th-themepost th-themepostoverlap">
+                <figure class="th-themepost-img">
+                    <a href="@strLink">
+                        <img src="@strImg" alt="@tbl.Title" class="img-fluid" />
+                    </a>
+                    <span class="th-theme-tag">
+                        @tbl.CategoryName
+                    </span>
+                    <figcaption class="shadow-layer">
+                        <ul class="th-postmatadata">
+                            <li><a href="javascript:;">@tbl.UserName</a></li>
+                            <li>
+                                <time>
+                                    <a href="javascript:;">@tbl.PublishDate.ToString("dd/MM/yyyy HH:mm")</a>
+                                </time>
+                            </li>
+                        </ul>
+                        <div class="th-posttitle">
+                            <h2><a href="@strLink">@tbl.Title</a></h2>
+                        </div>
+                    </figcaption>
+                </figure>
+            </article>
+
+        }
+    </div>
+    <div class="th-control">
+        <div class="th-btnslidernext"><span></span></div>
+        <div class="th-slider-pagination"></div>
+        <div class="th-btnsliderprev"><span></span></div>
+    </div>
+</div>

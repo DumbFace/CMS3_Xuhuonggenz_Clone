@@ -1,0 +1,17 @@
+﻿@model List<webCMS3.Models.tblZone>
+@using System.Web.Configuration;
+@using webCMS3.Models
+@{
+    Layout = null;
+}
+    <ul>
+        <li>
+            <a href="@Url.Action("NewsRss","Rss")">Trang chủ</a>
+        </li>
+        @foreach (tblZone tbl in Model)
+        {
+            <li>
+                <a href="@Url.Action("CategoryRss","Rss", new { id = tbl.Id })">@tbl.ZoneName</a>
+            </li>
+        }
+    </ul>
