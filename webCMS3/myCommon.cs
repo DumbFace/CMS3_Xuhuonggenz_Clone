@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using webCMS3.Models;
+using Enum = webCMS3.Helpers.Enum;
 
 namespace webCMS3
 {
@@ -41,6 +42,15 @@ namespace webCMS3
                 return WebConfigurationManager.AppSettings["RedisKeySuffix"];
             }
         }
+
+        public static List<WebName> ListWebCrawData
+            => new List<WebName>()
+            {
+                new WebName(){ Id = (int) Enum.ListWeb.tuoitre, Name = "Tuổi trẻ"},
+                new WebName() { Id = (int)Enum.ListWeb.thanhnien, Name = "Thanh niên"},
+               new WebName() { Id = (int)Enum.ListWeb.kenh14, Name = "Kênh 14"}
+
+            };
 
         public static void CachedNews(int Id)
         {
@@ -128,7 +138,7 @@ namespace webCMS3
 
         public static string FriendlyUrlZone(string strTitle, int id)
         {
-             return "/" + ReplaceSpecial(strTitle) + "-" + id.ToString() + "c";
+            return "/" + ReplaceSpecial(strTitle) + "-" + id.ToString() + "c";
         }
 
 

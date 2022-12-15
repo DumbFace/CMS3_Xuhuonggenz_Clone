@@ -1,6 +1,10 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using webCMS3.Models;
@@ -45,7 +49,7 @@ namespace webCMS3.Areas.admincp.Controllers
             if (intFlag == 0)
             {
                 Id = myfunc.InsertNews(tbl);
-              
+
             }
             else
             {
@@ -118,5 +122,6 @@ namespace webCMS3.Areas.admincp.Controllers
             ViewBag.IdType = Id;
             return PartialView();
         }
+
     }
 }

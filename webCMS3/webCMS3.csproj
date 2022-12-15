@@ -241,6 +241,7 @@
     <Compile Include="Areas\admincp\Controllers\CategoryController.cs" />
     <Compile Include="Areas\admincp\Controllers\ConfigWebController.cs" />
     <Compile Include="Areas\admincp\Controllers\ContentController.cs" />
+    <Compile Include="Areas\admincp\Controllers\CrawDataController.cs" />
     <Compile Include="Areas\admincp\Controllers\ManageUsersController.cs" />
     <Compile Include="Areas\admincp\Controllers\SitemapController.cs" />
     <Compile Include="Areas\admincp\Controllers\TagsController.cs" />
@@ -257,6 +258,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Enum.cs" />
+    <Compile Include="Models\CrawlingData.cs" />
     <Compile Include="Models\tblConfig.cs" />
     <Compile Include="Models\tblHome.cs" />
     <Compile Include="Models\tblNews.cs" />
@@ -265,6 +268,7 @@
     <Compile Include="Models\tblTag.cs" />
     <Compile Include="Models\tblUser.cs" />
     <Compile Include="Models\tblZone.cs" />
+    <Compile Include="Models\WebName.cs" />
     <Compile Include="MyAuthorize.cs" />
     <Compile Include="myCommon.cs" />
     <Compile Include="myfunc.cs" />
@@ -357,6 +361,7 @@
     <Content Include="Areas\admincp\Views\Content\ShowUrlImage.cshtml" />
     <Content Include="Areas\admincp\Views\Sitemap\Index.cshtml" />
     <Content Include="Areas\admincp\Views\Shared\_modalCloneImage.cshtml" />
+    <Content Include="Areas\admincp\Views\CrawData\Index.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Content\fonts\Roboto-Bold.ttf" />
     <Content Include="Content\fonts\Roboto-Light.ttf" />
