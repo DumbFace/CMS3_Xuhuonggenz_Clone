@@ -147,7 +147,6 @@ namespace webCMS3.Areas.admincp.Controllers
             }
         }
 
-
         public void RemoveChild(string element, string attribute, string name, HtmlNode HtmlDocument)
         {
             HtmlDocument.SelectSingleNode($"//{element}[@{attribute}='{name}']").Remove();

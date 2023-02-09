@@ -67,7 +67,6 @@
             }
 
             whichWeb = selectWeb == 0 ? "tuoitre" : selectWeb == 1 ? "thanhnien" : selectWeb == 2 ? "kenh14" : ""
-            requestThanhNien();
             $.ajax({
                 url: `/admincp/CrawData/autofilter?url=${urlLink}&whichWeb=${whichWeb}`,
                 type: "GET",

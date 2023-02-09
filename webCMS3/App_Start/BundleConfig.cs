@@ -27,7 +27,8 @@ namespace webCMS3
                  "~/Scripts/custom.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jspost").Include(
-                "~/Scripts/jsContent.min.js",
+               "~/Scripts/jsContent.js",
+                //"~/Scripts/jsContent.min.js",
                 "~/Scripts/bootstrap_tagsinput.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/cssupload").Include(
@@ -59,7 +60,7 @@ namespace webCMS3
                 "~/Content/swiper.min.css"
             ));
 
-            BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
         }
     }
 }
